@@ -4,8 +4,8 @@
  API: https://developer.todoist.com/rest/v2/
  
  sounds:
-	- https://www.zapsplat.com/music/game-sound-bright-synth-bell-musical-chime-complete-success/
-	- https://www.zapsplat.com/music/game-sound-bright-synth-bell-musical-brittle-success/
+- https://www.zapsplat.com/music/game-sound-bright-synth-bell-musical-chime-complete-success/
+- https://www.zapsplat.com/music/game-sound-bright-synth-bell-musical-brittle-success/
  
  
 Back End: Flask for Python
