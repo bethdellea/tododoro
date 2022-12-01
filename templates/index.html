@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#tasksModal">
+  Launch demo modal
+</button>
+
+<div class="modal fade" id="tasksModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+		<h4>Check In Time</h4>
+		</div>
+		 <div class="modal-body">
+		 <h5>Which tasks did you get done?</h5>
+	<form method='post'>
+	{% for task in openTasks %}
+	{{task | safe}}
+	{% endfor %}
+	<br>
+	<input type="submit" value="I did that!">
+	</form>
+	</div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+	
