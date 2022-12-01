@@ -3,6 +3,10 @@
 	display: none;
 }
 
+.center
+{
+	text-align: center;
+}
 
 .loading
 {
@@ -21,7 +25,36 @@
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-position:center;
-	height: 850px;
+	height: 800px;
 	text-align: center;
 	text-align: center;
+}
+
+#timer h1
+{
+	color: #001a00;
+	font-weight: bold;
+	text-shadow: 2px 2px #bbffbb;
+	font-size: 5em;
+	margin-bottom: .5em;
+	margin-left: .5em;
+}
+
+#flipTimer1
+{
+	margin-left: .5em;
+}
+
+.focus
+{
+	background-color: #cc6666;
+}
+
+.break
+{
+	background-color: #ccffcc;
+}
+
+.content{
+	min-height: 100%;
 }

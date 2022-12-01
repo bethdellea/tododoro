@@ -11,9 +11,10 @@ success_message = ""
 @app.route("/", methods=('GET', 'POST'))
 def index():
     if request.method == 'POST':
-        print("POST SUBMITTED      ")
         form_data = dict(request.form)
+        
         changes_stored = update_todo_items(form_data)
+        
         if changes_stored:
             success_message = "success"
         else:

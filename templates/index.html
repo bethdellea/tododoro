@@ -2,8 +2,8 @@
 
 {% block content %}
 <div class="row justify-content-center">
-	<div class="col-1">
-		<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#tasksModal">
+	<div class="col-1 center">
+		&nbsp;<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#tasksModal">
 		 View Tasks!
 		</button>
 	</div>
@@ -12,7 +12,9 @@
 <div class="row justify-content-center">
 	<div class="col-10" id="timer">
 		<br>
-		<h5>it's timer time, babey</h5>
+		<h1>It's <div id="timerHeader"></div> Time!</h1>
+		<div class="flipTimer" id="flipTimer1">
+		</div> <!-- /flipTimer -->
 	</div>
 </div>
 
@@ -68,6 +70,12 @@
 
 
  <script type="text/javascript">
+	$(document).ready(function() {
+		setFocusTimer();
+	});
+
+
+
     $(document).on('submit','#todo-form',function(e)
 	{
 		e.preventDefault();
@@ -79,19 +87,18 @@
 		$("input[type=checkbox]:checked").each(function(){
 			selectedTasks.push($(this).val());
 		});
-		
+
 		$.ajax({
 			type:'POST',
         	url:'/',
-        	data:{
-          	todo:selectedTasks
-        	},
+        	data:$("#todo-form").serialize(),
         success:function(data)
         {
 			if(data == "success")
 			{
 				$("#update-success").fadeIn(1000);
 				getToDoItems();
+				setBreakTimer();
 			}
 			else
 			{
@@ -135,6 +142,68 @@
         }
       })
 	
+	}
+	
+	function setFocusTimer()
+	{
+		createTimerBlock();
+		$("#main").addClass('focus');
+		$("#main").removeClass('break');
+		$("#timerHeader").text("Focus");
+		var now = new Date();
+		var future = new Date();
+		future.setMinutes(now.getMinutes()+25);
+		
+		//debug length
+		//future.setMinutes(now.getMinutes()+1);
+		
+		$('.flipTimer').flipTimer({ 
+			// count up or countdown
+			direction: 'down', 
+			date: future.toString(), 
+
+			// callback works only with direction = "down"
+			callback: function() { $("#tasksModal").modal('show'); },
+			
+			hours: false,
+			days: false,
+
+		});
+	
+	}
+	
+	function setBreakTimer()
+	{
+		createTimerBlock();
+		$("#main").removeClass('focus');
+		$("#main").addClass('break');
+		$("#timerHeader").text("Break");
+
+		var breakNow = new Date();
+		var breakFuture = new Date();
+		
+		breakFuture.setMinutes(breakNow.getMinutes()+5);
+		//debug length
+		//breakFuture.setMinutes(breakNow.getMinutes()+1);		
+		$('.flipTimer').flipTimer({ 
+			// count up or countdown
+			direction: 'down', 
+			date: breakFuture.toString(), 
+
+			// callback works only with direction = "down"
+			callback: function() { setFocusTimer(); },
+			
+			hours: false,
+			days: false,
+
+		});
+	}
+	
+	//to flip between focus and break timers, remove old timer div and make a new one
+	function createTimerBlock()
+	{
+		$("#flipTimer1").remove();
+		$("#timer").append('<div class="flipTimer" id="flipTimer1"><div class="minutes"></div>	<div class="seconds"></div></div> <!-- /flipTimer -->');
 	}
 	
   </script>

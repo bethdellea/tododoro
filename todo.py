@@ -51,13 +51,14 @@ def make_todo_items(projects, tasks):
 def update_todo_items(form_data):
     #form data comes in as a dictionary, make it into a list of the ids
     completed_ids = list(form_data.values())
-
     for current_completed in completed_ids:
         try:
             is_success = todoist.close_task(task_id=str(escape(completed_ids[0])))
             if not is_success:
                 #if we have an error,inform the user so they can retry
                 return False
+            else:
+                continue
         except Exception as error:
             #if we have an error,inform the user so they can retry
             print (error)
