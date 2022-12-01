@@ -1,6 +1,12 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% if success_message %}
+<div class="alert alert-success" role="alert">
+  Successfully updated Todoist!
+</div>
+{% endif %}
+
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#tasksModal">
   Launch demo modal
 </button>
