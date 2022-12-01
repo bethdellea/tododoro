@@ -1,12 +1,13 @@
 import json
 from todoist_api_python.api import TodoistAPI
 from config import *
-from flask import escape
+from flask import escape, flash
+
+todoist = TodoistAPI(USERTOKEN)
 
 #get open To Do list tasks from Todoist 
 def get_todo_content():
-    
-    todoist = TodoistAPI(USERTOKEN)
+
     project_dict = {}
     open_tasks = []
     
@@ -45,3 +46,28 @@ def make_todo_items(projects, tasks):
         items.append(task_html)
         task_num+=1
     return items
+
+
+def update_todo_items(form_data):
+    #form data comes in as a dictionary, make it into a list of the ids
+    completed_ids = list(form_data.values())
+
+    for current_completed in completed_ids:
+        try:
+            is_success = todoist.close_task(task_id=str(escape(completed_ids[0])))
+            if not is_success:
+                #if we have an error,inform the user so they can retry
+                flash('Error updating list. Try again?')
+        except Exception as error:
+            #if we have an error,inform the user so they can retry
+            print (error)
+            flash('Error updating list. Try again?')
+    return True
+        
+
+
+
+
+
+
+
