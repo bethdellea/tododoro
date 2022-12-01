@@ -2,3 +2,15 @@
 {
 	display: none;
 }
+
+
+.loading
+{
+	background-image: url("pl_load.gif");
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+	height: 150px;
+	width: 150px;
+	text-align: center;
+}

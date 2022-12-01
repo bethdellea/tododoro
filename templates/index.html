@@ -46,10 +46,18 @@
         	data:{
           	todo:selectedTasks
         	},
-        success:function()
+        success:function(data)
         {
+			console.log(data);
 			$("#tasksModal").modal('toggle');
-			$("#update-success").fadeIn(1000);
+			if(data == "success")
+			{
+				$("#update-success").fadeIn(1000);
+			}
+			else
+			{
+				$("#update-error").fadeIn(1000);
+			}
         }
       })
     });

@@ -23,20 +23,21 @@
 <body>
 
 	<div class="content container-fluid">
-		<br>
+	<br>
 		{%block content%} {%endblock%}
-	
-	
+		<div class="loading">
+			<br><br> <!-- space so the loading text is over the gif -->
+			<p>loading...</p>
+		</div>
+		<br>
 		<!-- error/success message zone -->
-		{% for message in get_flashed_messages() %}
-			<div class="alert alert-danger alert-dismissable fade col-4" role="alert">
-				<button type="button" class="close" data-dismiss="alert" aria-label="Close" class="fade close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-				{{message}}
-			</div>
-		{% endfor %}
-		
+		<div class="alert alert-danger alert-dismissable col-4 hidden" role="alert" id="update-error">
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close" class="fade close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			There was an error updating Todoist, please retry.
+		</div>
+
 		<div class="alert alert-success alert-dismissable col-4 hidden" role="alert" id="update-success">
 			<button type="button" class="close" data-dismiss="alert" aria-label="Close" class="fade close">
 				<span aria-hidden="true">&times;</span>
