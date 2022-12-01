@@ -17,7 +17,13 @@ def index():
         if changes_stored:
             success_message = "success"
         else:
-            success_message = ""
+            success_message = "error"
+        return success_message
     todo_return = get_todo_content()
     return render_template('index.html', openTasks=todo_return)
 
+
+@app.route("/tasks")
+def getTasks():
+    todo_return = get_todo_content()
+    return todo_return

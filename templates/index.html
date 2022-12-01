@@ -1,30 +1,67 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#tasksModal">
- View Tasks!
-</button>
+<div class="row justify-content-center">
+	<div class="col-1">
+		<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#tasksModal">
+		 View Tasks!
+		</button>
+	</div>
+</div>
+<br>
+<div class="row justify-content-center">
+	<div class="col-10" id="timer">
+		<br>
+		<h5>it's timer time, babey</h5>
+	</div>
+</div>
 
 <div class="modal fade" id="tasksModal" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
     <div class="modal-content">
-      <div class="modal-header">
-		<h4>Check In Time</h4>
-		 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+		<div class="modal-header">
+			<h4>Check In Time</h4>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
 		</div>
-		 <div class="modal-body">
-		 <h5>Which tasks did you get done?</h5>
-	<form id="todo-form" method='post'>
-	{% for task in openTasks %}
-	{{task | safe}}
-	{% endfor %}
-	<br>
-	<input type="submit" value="I did that!">
-	</form>
-	</div>
+		<div class="modal-body">
+			<h5>Which tasks did you get done?</h5>
+			<br>
+			<!-- error/success message zone -->
+			<div class="alert alert-danger alert-dismissable col-5 hidden" role="alert" id="update-error">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close" class="fade close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				There was an error updating Todoist, please retry.
+			</div>
+
+			<div class="alert alert-success alert-dismissable col-5 hidden" role="alert" id="update-success">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close" class="fade close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				Successfully updated Todoist!
+			</div>
+			
+			<div class="loading hidden" id="tasks-loading">
+				<br><br> <!-- space so the loading text is over the gif -->
+				<p>loading...</p>
+			</div>
+
+			<form id="todo-form" method='post'>
+			
+				<div id="task-items">
+					{% for task in openTasks %}
+					{{task | safe}}
+					{% endfor %}
+				</div>
+				<br>
+				<input type="submit" id="form-submit" value="I did that!">
+				
+
+			</form>
+		</div>
     </div>
   </div>
 </div>
@@ -34,6 +71,9 @@
     $(document).on('submit','#todo-form',function(e)
 	{
 		e.preventDefault();
+		
+		//disable submit button 
+		$("#form-submit").prop("diabled", true);
 		
 		var selectedTasks = [];
 		$("input[type=checkbox]:checked").each(function(){
@@ -48,22 +88,55 @@
         	},
         success:function(data)
         {
-			console.log(data);
-			$("#tasksModal").modal('toggle');
 			if(data == "success")
 			{
 				$("#update-success").fadeIn(1000);
+				getToDoItems();
 			}
 			else
 			{
 				$("#update-error").fadeIn(1000);
 			}
         }
-      })
+      });
     });
 
 
-	///TO-DO: add timers!! add pretty ui!! auto-open the modal when the timer ends!
+	function getToDoItems()
+	{
+		$.ajax({
+			type:'GET',
+        	url:'/tasks',
+        	data:{},
+        success:function(data)
+        {
+			//remove current task list, show loading icon
+			$("#task-items").empty();
+			$("#tasks-loading").fadeIn(2000);
+			
+			if(data)
+			{
+				$("#tasks-loading").delay(2000).slideUp(2000);
+				$("#task-items").delay(7000).queue(function(n) {
+					$(this).html(data);
+					n();
+					}).fadeIn(500);
+					
+				//with new items to submit, re-enable button
+				$("#form-submit").delay(7000).prop("diabled", false);
+			}
+			else
+			{
+				$("#task-items").delay(7000).queue(function(n) {
+				$(this).html("<p>There was an error fetching tasks, please reload</p>");
+				n();
+				}).fadeIn(500);
+			}
+        }
+      })
+	
+	}
+	
   </script>
 
 

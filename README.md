@@ -15,3 +15,4 @@ Back End: Flask for Python
 	- todoist
 	- habitica
 - loading icons!
+- timer length options
