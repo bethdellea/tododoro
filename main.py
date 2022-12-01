@@ -6,7 +6,7 @@ app = Flask(__name__)
 #key for flash messages
 app.config['SECRET_KEY'] = SECRET_FLASH_KEY
 
-success_message = False
+success_message = ""
 
 @app.route("/", methods=('GET', 'POST'))
 def index():
@@ -15,9 +15,9 @@ def index():
         form_data = dict(request.form)
         changes_stored = update_todo_items(form_data)
         if changes_stored:
-            success_message = True
+            success_message = "success"
         else:
-            success_message = False
+            success_message = ""
     todo_return = get_todo_content()
     return render_template('index.html', openTasks=todo_return)
 

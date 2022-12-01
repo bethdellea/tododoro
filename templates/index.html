@@ -1,25 +1,23 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{% if success_message %}
-<div class="alert alert-success" role="alert">
-  Successfully updated Todoist!
-</div>
-{% endif %}
-
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#tasksModal">
-  Launch demo modal
+ View Tasks!
 </button>
 
 <div class="modal fade" id="tasksModal" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-dialog-scrollable" role="document">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
 		<h4>Check In Time</h4>
+		 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
 		</div>
 		 <div class="modal-body">
 		 <h5>Which tasks did you get done?</h5>
-	<form method='post'>
+	<form id="todo-form" method='post'>
 	{% for task in openTasks %}
 	{{task | safe}}
 	{% endfor %}
@@ -30,5 +28,38 @@
     </div>
   </div>
 </div>
+
+
+ <script type="text/javascript">
+    $(document).on('submit','#todo-form',function(e)
+	{
+		e.preventDefault();
+		
+		var selectedTasks = [];
+		$("input[type=checkbox]:checked").each(function(){
+			selectedTasks.push($(this).val());
+		});
+		
+		$.ajax({
+			type:'POST',
+        	url:'/',
+        	data:{
+          	todo:selectedTasks
+        	},
+        success:function()
+        {
+			$("#tasksModal").modal('toggle');
+			$("#update-success").fadeIn(1000);
+        }
+      })
+    });
+
+
+	///TO-DO: add timers!! add pretty ui!! auto-open the modal when the timer ends!
+  </script>
+
+
 {% endblock %}
+
+
 	

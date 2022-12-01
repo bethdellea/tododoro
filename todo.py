@@ -58,10 +58,13 @@ def update_todo_items(form_data):
             if not is_success:
                 #if we have an error,inform the user so they can retry
                 flash('Error updating list. Try again?')
+                return False
         except Exception as error:
             #if we have an error,inform the user so they can retry
             print (error)
             flash('Error updating list. Try again?')
+            return False
+    #flash('this has been a test of the emergency broadcast system')
     return True
         
 
