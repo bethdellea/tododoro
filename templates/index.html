@@ -67,7 +67,13 @@
     </div>
   </div>
 </div>
+<audio id="focusEnd">
+	<source src="{{url_for('static', filename='assets/audio/focus_end.mp3')}}" type="audio/mp3">
+</audio>
 
+<audio id="breakEnd">
+	<source src="{{url_for('static', filename='assets/audio/break_end.mp3')}}" type="audio/mp3">
+</audio>
 
  <script type="text/javascript">
 	$(document).ready(function() {
@@ -163,7 +169,7 @@
 			date: future.toString(), 
 
 			// callback works only with direction = "down"
-			callback: function() { $("#tasksModal").modal('show'); },
+			callback: function() { $('audio#focusEnd')[0].play(); $("#tasksModal").modal('show'); },
 			
 			hours: false,
 			days: false,
@@ -191,7 +197,7 @@
 			date: breakFuture.toString(), 
 
 			// callback works only with direction = "down"
-			callback: function() { setFocusTimer(); },
+			callback: function() {  $('audio#breakEnd')[0].play(); setFocusTimer(); },
 			
 			hours: false,
 			days: false,
